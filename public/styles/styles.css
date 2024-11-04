@@ -1,0 +1,151 @@
+body{
+    margin: 0;
+    height: 100vh;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #e7ecf5;
+}
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 9px;
+
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #085b5f;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background-color: #0a7a80;
+
+    transition: background-color 2s;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #94d1c9;
+  }
+
+
+
+
+
+/*Header Styles*/
+header{
+    position: fixed;
+    top: 0;
+    height: 75px;
+    width: 100%;
+    background-color: #0a7a80;
+    border-bottom: 10px solid #085b5f;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#headerItemContainer, #Logo, #credit{
+    display: flex;
+    list-style: none;
+    height: 100%;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+#Logo{
+    margin-left: 20px;
+}
+#credit{
+    margin-right: 20px;
+}
+.LogoIcon{
+    height: 33px;
+    width: 33px;
+    margin-left: 10px;
+}
+
+
+
+
+/*Main Styling*/
+section{
+    height: 100vh;
+    display: flex;
+    justify-content: space-between;
+}
+
+.leftSide{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    width: 50%;
+    background-color: #393E46;
+    padding-block: 65px;
+    border-top: #222831 10px solid;
+    border-right: #222831 10px solid;
+}
+.book-cover{
+    width: 50%;
+    border: #085b5f 5px solid;
+}
+
+
+
+.rightSide{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+    width: 50%;
+    background-color: #222831;
+    padding-block: 65px;
+    color: #EEEEEE;
+    border-top: #393E46 10px solid;
+    border-left: #393E46  10px solid;
+}
+.postContainer{
+    width: 60%;
+}
+
+
+.divider{
+    width: 100%;
+    background-color: #0a7a80;
+    height: 4px;
+    border-radius: 95%;
+}
+
+.review{
+    height: 50%;
+    max-height: 300px;
+    background-color: #393E46;
+    padding: 10px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    overflow-y: scroll;
+    font-size: larger;
+}
+
+
+
+
+
+/*Footer Styles*/
+footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #0a7a80;
+    display: flex;
+    justify-content: center;
+}
+
+
