@@ -5,7 +5,7 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    color: #e7ecf5;
+    color: #f0f3f8;
 }
 
 
@@ -74,7 +74,7 @@ header{
 
 
 /*Main Styling*/
-section{
+.Posts{
     height: 100vh;
     display: flex;
     justify-content: space-between;
@@ -134,6 +134,38 @@ section{
     font-size: larger;
 }
 
+.date-deleteBox, .rating-updateBox{
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    align-items: center;
+}
+
+button{
+    height: 25px;
+    width: 80px;
+    border: solid 2px #085b5f;
+    border-radius: 20px;
+    background-color: #393E46;
+    color: white;
+    transition: background-color 2s, border 1s, transform 1s ease-in-out;
+}
+
+.update-Button:hover{
+    cursor: pointer;
+    background-color: rgb(96, 196, 96);
+    border: none;
+    transform: scale(1.1);
+
+}
+
+.delete-Button:hover{
+    cursor: pointer;
+    background-color: rgb(192, 84, 84);
+    border: none;
+    transform: scale(1.1);
+
+}
 
 
 
