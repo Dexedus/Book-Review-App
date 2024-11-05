@@ -1,27 +1,39 @@
 <%- include("partials/header.ejs")  %>
 
+<main>
+  <h1>No posts saved. Try adding one.</h1>
+</main>    
+
+<% posts.forEach(post => { %>
+    
 <section class="Posts">
     <div class="leftSide">
-        <img class="book-cover" src="/images/images.png" alt="Book Cover">
+      <% if(post.cover_id === null){ %>
+        <img class="book-cover" src="/images/images.png">
+      <% } else { %>
+        <img class="book-cover" src="https://covers.openlibrary.org/b/olid/<%= post.cover_id %>-L.jpg" alt="Book Cover">
+      <% } %>
     </div>
 
     <div class="rightSide">
         <div class="postContainer">
-            <h3 class="author">by: Author</h3>
+            <h3 class="author"><%= post.author %>'s Review of:</h3>
+            <h2 class="book-author"><%= post.book_auth %></h2>
             <div class="divider"></div>
-            <p class="review">This is a placeholder description for this title. It is a representation of where the self written description will go. This will probably have some sort of max length allowed but no minimum length at all. Blah blah blah blah blahThis is a placeholder description for this title. It is a representation of where the self written description will go. This will probably have some sort of max length allowed but no minimum length at all. Blah blah blah blah blah</p>
+            <p class="review"><%= post.descr %></p>
             <div class="divider"></div>
             <div class="rating-updateBox">
-              <p class="rating">Rating 5 Stars</p>
+              <p class="rating">Rating: <%= post.rating %>/10</p>
               <button class="update-Button">Update</button>
             </div>
             <div class="date-deleteBox">
-              <p class="date">2024/11/04</p>
-              <button class="delete-Button">Delete</button>
+              <p class="date"><%= post.date %></p>
+              <a href="/delete<%= post.id %>"><button class="delete-Button">Delete</button></a>
             </div>
         </div>
     </div>
 </section>
 
+<% });%>
 
 <%- include("partials/footer.ejs")  %>

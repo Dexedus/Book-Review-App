@@ -1,0 +1,23 @@
+<%- include("partials/header.ejs")  %>
+
+<div id="background">
+
+    <form action="/submit" method="post">
+        <div id="infoBox">
+            <p class="info">Your Name</p>
+            <p class="info">Book Name</p>
+        </div>
+        <div id="auth-titleBox">
+          <input id="newAuthor" type="text" name="author" placeholder="Write YOUR name here." required>
+          <input id="newTitle" type="text" name="book" placeholder="Write the name of the book here." required>
+        </div>
+        <div class="divider"></div>
+        <textarea id="newDesc" name="review" placeholder="Write your review here." required></textarea>
+        <div class="divider"></div>
+        <input id="rating" name="rating" type="number" min="0" max="10" placeholder="Rating" required>
+        <input id="submit" type="submit">
+    </form>
+
+</div>
+
+<%- include("partials/footer.ejs")  %>

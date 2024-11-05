@@ -6,6 +6,8 @@ body{
     flex-direction: column;
     justify-content: space-between;
     color: #f0f3f8;
+    cursor: default;
+    overflow-x: hidden;
 }
 
 
@@ -58,6 +60,10 @@ header{
     padding: 0;
     margin: 0;
 }
+a{
+    color: #f0f3f8;
+    text-decoration: none;
+}
 #Logo{
     margin-left: 20px;
 }
@@ -69,11 +75,36 @@ header{
     width: 33px;
     margin-left: 10px;
 }
+.nav-bar-button{
+    height: 50px;
+    width: 100px;
+    margin-inline: 20px;
+    background-color: #064c5075;
+    transition: transform 1.5s, background-color 1.5s;
+}
+.nav-bar-button:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+    background-color: #15887a;
+
+}
+#headerItemContainer{
+    margin-right: 55px;
+}
 
 
+main{
+    background-color: #393E46;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: -100px;
+}
 
 
-/*Main Styling*/
+/*Posts Styling*/
 .Posts{
     height: 100vh;
     display: flex;
@@ -92,7 +123,7 @@ header{
     border-right: #222831 10px solid;
 }
 .book-cover{
-    width: 50%;
+    width: 40%;
     border: #085b5f 5px solid;
 }
 
@@ -104,6 +135,7 @@ header{
     align-items: center;
     justify-content: center;
     height: 90vh;
+    overflow-y: visible;
     width: 50%;
     background-color: #222831;
     padding-block: 65px;
@@ -181,3 +213,66 @@ footer{
 }
 
 
+
+
+
+
+
+/*New page Styling*/
+#background{
+    height: 100vh;
+    width: 100vw;
+    background-color: #222831;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form{
+    background-color: #393E46;
+    height: 50%;
+    width: 50%;
+    border-radius: 20px;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+input{
+    margin-block: 10px;
+}
+#newAuthor, #newTitle{
+    width: 40%;
+    margin-inline: 10px;
+}
+#rating{
+    width: 10%;
+    height: 10%;
+    text-align: center;
+}
+#submit{
+    margin-bottom: -30px;
+    width: 10%;
+    height: 10%;
+    border-radius: 20px;
+    border: none;
+}
+#auth-titleBox{
+    display: flex;
+    justify-content: center;
+    width: 50%;
+}
+textarea{
+    width: 60%;
+    height: 75%;
+    margin-block: 20px;
+}
+#infoBox{
+    display: flex;
+    width: 50%;
+    justify-content: center;
+}
+.info{
+    margin-inline: 14.5%;
+}
