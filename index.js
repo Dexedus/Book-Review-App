@@ -29,7 +29,7 @@ let posts = [];
 app.get("/", async (req, res) =>{
 
     let data = await db.query("SELECT * FROM posts");
-    posts = data.rows
+    posts = data.rows;
     console.log(posts);
     res.render("index.ejs",{
         posts: posts,
@@ -110,10 +110,11 @@ app.post("/edit:id", async (req, res) =>{
 })
 
 //Filter by author of Review
-app.get("/:auth", async (req, res) =>{
+app.get("/author:auth", async (req, res) =>{
     let author = req.params.auth
     let data = await db.query("SELECT * FROM posts WHERE author = ($1)", [author])
     posts = data.rows; 
+    console.log(posts)
     res.render("index.ejs", {
         posts: posts,
     })
@@ -121,10 +122,10 @@ app.get("/:auth", async (req, res) =>{
 
 //Delete post
 app.get("/delete:id", async (req, res) =>{
-    let id = req.params.id
-    await db.query("DELETE FROM posts WHERE id = ($1)", [id])
+    let id = req.params.id;
+    await db.query("DELETE FROM posts WHERE id = ($1)", [id]);
 
-    res.redirect("/")
+    res.redirect("/");
 });
 
 
