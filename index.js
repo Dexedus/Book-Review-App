@@ -11,10 +11,11 @@ const port = 3000;
 //Databse
 const db = new pg.Client({
     user: process.env.un,
-    host: "localhost",
-    database: "Bookstored",
+    host: process.env.host,
+    database: "bookstored",
     password: process.env.pw,
     port: 5432,
+    ssl: true,
   });
   db.connect();
 

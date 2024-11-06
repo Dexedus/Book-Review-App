@@ -100,7 +100,7 @@ main{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: -100px;
+    margin-bottom: -150px;
 }
 
 
@@ -115,7 +115,7 @@ main{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh;
+    height: 100vh;
     width: 50%;
     background-color: #393E46;
     padding-block: 65px;
@@ -134,7 +134,7 @@ main{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 90vh;
+    height: 100vh;
     overflow-y: visible;
     width: 50%;
     background-color: #222831;
@@ -142,6 +142,7 @@ main{
     color: #EEEEEE;
     border-top: #393E46 10px solid;
     border-left: #393E46  10px solid;
+    overflow-y: hidden;
 }
 .postContainer{
     width: 60%;
