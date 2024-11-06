@@ -1,7 +1,28 @@
 <%- include("partials/header.ejs")  %>
 
 <div id="background">
+    <!--If there is a post, render the update post form instead of the new post form-->
+    <% if(locals.posts){ %>
 
+    <form action="/edit<%= posts.id %>" method="post">
+        <div id="infoBox">
+            <p class="info">Your Name</p>
+            <p class="info">Book Name</p>
+        </div>
+        <div id="auth-titleBox">
+          <input id="newAuthor" type="text" name="author" placeholder="Write YOUR name here." required value="<%= posts.author %>">
+          <input id="newTitle" type="text" name="book" placeholder="Write the name of the book here." required value="<%= posts.book_auth %>">
+        </div>
+        <div class="divider"></div>
+        <textarea id="newDesc" name="review" placeholder="Write your review here." required><%= posts.descr %></textarea>
+        <div class="divider"></div>
+        <input id="rating" name="rating" type="number" min="0" max="10" placeholder="Rating" required value="<%= posts.rating %>">
+        <input id="submit" type="submit">
+    </form>
+
+    <% } else { %>
+    
+    <!--New post form-->    
     <form action="/submit" method="post">
         <div id="infoBox">
             <p class="info">Your Name</p>
@@ -17,6 +38,8 @@
         <input id="rating" name="rating" type="number" min="0" max="10" placeholder="Rating" required>
         <input id="submit" type="submit">
     </form>
+
+    <% } %>
 
 </div>
 

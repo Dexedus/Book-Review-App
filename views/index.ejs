@@ -4,27 +4,31 @@
   <h1>No posts saved. Try adding one.</h1>
 </main>    
 
+<!--For each entry in the database, render the section 'posts'-->
 <% posts.forEach(post => { %>
     
 <section class="Posts">
     <div class="leftSide">
+      <!--If coverID = Null, render a placeholder cover saved in public images folder-->
       <% if(post.cover_id === null){ %>
         <img class="book-cover" src="/images/images.png">
+      <!--Otherwise, fetch the cover for the book using the open library API-->
       <% } else { %>
         <img class="book-cover" src="https://covers.openlibrary.org/b/olid/<%= post.cover_id %>-L.jpg" alt="Book Cover">
       <% } %>
     </div>
-
+      
+      <!--On right side, EJS templating displays the details for each post-->
     <div class="rightSide">
         <div class="postContainer">
-            <h3 class="author"><%= post.author %>'s Review of:</h3>
+            <a class="authorTag" href="/auth<%= post.author %>"><h3 class="author"><%= post.author %>'s</a> Review of:</h3>
             <h2 class="book-author"><%= post.book_auth %></h2>
             <div class="divider"></div>
             <p class="review"><%= post.descr %></p>
             <div class="divider"></div>
             <div class="rating-updateBox">
               <p class="rating">Rating: <%= post.rating %>/10</p>
-              <button class="update-Button">Update</button>
+              <a href="/update<%= post.id %>"><button class="update-Button">Update</button></a>
             </div>
             <div class="date-deleteBox">
               <p class="date"><%= post.date %></p>

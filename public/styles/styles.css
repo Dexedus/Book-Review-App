@@ -147,6 +147,13 @@ main{
     width: 60%;
 }
 
+.authorTag{
+    text-decoration: underline!important;
+    color: #0a7a80;
+}
+.authorTag:hover{
+    color: #7ec0b8;
+}
 
 .divider{
     width: 100%;
