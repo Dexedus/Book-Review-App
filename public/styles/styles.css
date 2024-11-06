@@ -289,3 +289,12 @@ textarea{
 .info{
     margin-inline: 14.5%;
 }
+
+
+@media(max-height: 760px){
+
+    .review{
+        min-height: 200px;
+    }
+    
+}
