@@ -90,7 +90,7 @@ app.post("/submit", async (req, res) =>{
 app.get("/update:id", async (req, res) =>{
     let id = req.params.id;
     let data = await db.query("SELECT * FROM posts WHERE id = ($1)",[id]);
-    posts = data.rows[0];
+    let posts = data.rows[0];
     res.render("new.ejs", {
         posts: posts,
     });
@@ -110,15 +110,15 @@ app.post("/edit:id", async (req, res) =>{
 })
 
 //Filter by author of Review
-app.get("/author:auth", async (req, res) =>{
-    let author = req.params.auth
-    let data = await db.query("SELECT * FROM posts WHERE author = ($1)", [author])
-    posts = data.rows; 
-    console.log(posts)
+app.get("/author/:auth", async (req, res) =>{
+    let author = req.params.auth;
+    let data =  await db.query("SELECT * FROM posts WHERE author ILIKE ($1) AND author IS NOT NULL AND author != ''", [author]);
+    let posts = data.rows;
+    console.log(author);
     res.render("index.ejs", {
         posts: posts,
-    })
-})
+    });
+});
 
 //Delete post
 app.get("/delete:id", async (req, res) =>{

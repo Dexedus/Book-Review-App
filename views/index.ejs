@@ -21,7 +21,7 @@
       <!--On right side, EJS templating displays the details for each post-->
     <div class="rightSide">
         <div class="postContainer">
-            <a class="authorTag" href="/author<%= post.author %>"><h3 class="author"><%= post.author %>'s</a> Review of:</h3>
+            <a class="authorTag" href="/author/<%= post.author %>"><h3 class="author"><%= post.author %>'s</a> Review of:</h3>
             <h2 class="book-author"><%= post.book_auth %></h2>
             <div class="divider"></div>
             <p class="review"><%= post.descr %></p>

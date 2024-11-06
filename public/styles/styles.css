@@ -217,8 +217,6 @@ button{
 
 /*Footer Styles*/
 footer{
-    position: fixed;
-    bottom: 0;
     width: 100%;
     background-color: #0a7a80;
     display: flex;
@@ -288,6 +286,15 @@ textarea{
 }
 .info{
     margin-inline: 14.5%;
+}
+#submit{
+    transition: transform 1s, color 1s, background-color 1s;
+}
+#submit:hover{
+    cursor: pointer;
+    background-color: #222831;
+    color: white;
+    transform: scale(1.1);
 }
 
 

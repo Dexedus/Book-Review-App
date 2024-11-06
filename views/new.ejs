@@ -21,6 +21,12 @@
     </form>
 
     <% } else { %>
+
+        <%  function disableButton(button) {
+            button.disabled = true;
+            button.value = "submitting...."
+            button.form.submit();
+       } %>
     
     <!--New post form-->    
     <form action="/submit" method="post">
@@ -36,7 +42,7 @@
         <textarea id="newDesc" name="review" placeholder="Write your review here." required></textarea>
         <div class="divider"></div>
         <input id="rating" name="rating" type="number" min="0" max="10" placeholder="Rating" required>
-        <input id="submit" type="submit">
+        <input id="submit" type="submit" onclick="disableButton(this)"/>
     </form>
 
     <% } %>
