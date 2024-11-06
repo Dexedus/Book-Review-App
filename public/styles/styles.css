@@ -292,6 +292,9 @@ textarea{
 
 
 @media(max-height: 760px){
+    body{
+        font-size: smaller;
+    }
 
     .review{
         min-height: 200px;
@@ -299,6 +302,8 @@ textarea{
 
     .leftSide, .rightSide{
         height: 600px;
+        padding: 0;
+
     }
 
     main{
