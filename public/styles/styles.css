@@ -119,7 +119,7 @@ main{
     height: 100vh;
     width: 50%;
     background-color: #393E46;
-    padding-block: 65px;
+    padding-block: 0px;
     border-top: #222831 10px solid;
     border-right: #222831 10px solid;
 }
@@ -139,7 +139,7 @@ main{
     overflow-y: visible;
     width: 50%;
     background-color: #222831;
-    padding-block: 65px;
+    padding-block: 0px;
     color: #EEEEEE;
     border-top: #393E46 10px solid;
     border-left: #393E46  10px solid;
