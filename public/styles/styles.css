@@ -125,7 +125,7 @@ main{
 }
 .book-cover{
     width: 40%;
-    border: #085b5f 5px solid;
+    box-shadow: 10px 10px 10px #252727;
 }
 
 
