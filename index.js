@@ -65,7 +65,7 @@ app.get("/add", async (req, res) =>{
 
 // Add entry to database
 app.post("/submit", async (req, res) =>{
-    let author = req.body.author;
+    let author = req.body.author.trim();
     let book = req.body.book;
     let review = req.body.review;
     let rating = req.body.rating;
@@ -112,7 +112,7 @@ app.post("/edit:id", async (req, res) =>{
 //Filter by author of Review
 app.get("/author/:auth", async (req, res) =>{
     let author = req.params.auth;
-    let data =  await db.query("SELECT * FROM posts WHERE author ILIKE ($1) AND author IS NOT NULL AND author != ''", [author]);
+    let data =  await db.query("SELECT * FROM posts WHERE author ILIKE ($1)", [author]);
     let posts = data.rows;
     console.log(author);
     res.render("index.ejs", {
