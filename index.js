@@ -60,7 +60,9 @@ app.get("/desc", async (req, res) =>{
 
 // Load the new entry page
 app.get("/add", async (req, res) =>{
-    res.render("new.ejs")
+    res.render("new.ejs",{
+        header: "New Post",
+    })
 });
 
 // Add entry to database
@@ -93,6 +95,7 @@ app.get("/update:id", async (req, res) =>{
     let posts = data.rows[0];
     res.render("new.ejs", {
         posts: posts,
+        header: "Update Post",
     });
 
     console.log(posts)

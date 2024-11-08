@@ -5,6 +5,7 @@
     <% if(locals.posts){ %>
 
     <form action="/edit<%= posts.id %>" method="post">
+        <h1 id="headerEdit"><%= header %></h1>
         <div id="infoBox">
             <p class="info">Your Name</p>
             <p class="info">Book Name</p>
@@ -24,6 +25,7 @@
     
     <!--New post form-->    
     <form action="/submit" method="post">
+        <h1 id="headerEdit"><%= header %></h1>
         <div id="infoBox">
             <p class="info">Your Name</p>
             <p class="info">Book Name</p>

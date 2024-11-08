@@ -241,6 +241,7 @@ footer{
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-y: scroll;
 }
 
 form{
@@ -249,10 +250,12 @@ form{
     width: 50%;
     border-radius: 20px;
     padding: 50px;
+    margin-top: 65px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-height: 400px;
 }
 input{
     margin-block: 10px;
@@ -282,6 +285,7 @@ textarea{
     width: 60%;
     height: 75%;
     margin-block: 20px;
+    min-height: 100px;
 }
 #infoBox{
     display: flex;
@@ -293,6 +297,7 @@ textarea{
 }
 #submit{
     transition: transform 1s, color 1s, background-color 1s;
+    min-width: 100px;
 }
 #submit:hover{
     cursor: pointer;
@@ -402,6 +407,20 @@ header{
 #headerItemContainer{
     margin: 0;
 }
+}
+
+@media(max-width: 600px){
+   input{
+    min-width: 100px;
+   } 
+
+   #infoBox{
+    min-width: 245px;
+   }
+
+   #newDesc{
+    width: 100%;
+   }
 }
 
 @media(max-width: 490px){
