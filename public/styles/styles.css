@@ -1,3 +1,7 @@
+html{
+    scroll-behavior: smooth;
+}
+
 body{
     margin: 0;
     height: 100vh;
@@ -308,13 +312,128 @@ textarea{
     }
 
     .leftSide, .rightSide{
-        height: 600px;
         padding: 0;
 
     }
 
     main{
-        margin-bottom: -20px;
+        padding-bottom: 65px!important;
+    }
+
+    .review{
+        min-height: 100px;
     }
     
+    
+}
+
+@media(max-height: 670px){
+    .review{
+        max-height: 40px!important;
+    }
+}
+
+@media(max-height: 510px){
+    .Posts{
+        flex-direction: column;
+    }
+    .leftSide, .rightSide{
+        width: 100%;
+        border: none;
+    }
+
+    .leftSide{
+        height: 30%;
+    }
+    
+    .book-cover{
+        height: 100%;
+        width: 100px;
+    }
+
+    .body{
+        font-size: smaller;
+    }
+    
+}
+
+@media(max-width: 900px){
+.body{
+    font-size: smaller;
+}
+
+main{
+    padding-bottom: 50px;
+}
+
+header{
+    font-size: smaller;
+}
+
+.Posts{
+    flex-direction: column;
+}
+.leftSide, .rightSide{
+    width: 100%;
+    border: none;
+}
+
+.leftSide{
+    height: 30%;
+}
+
+.book-cover{
+    height: 100%;
+    width: 170px;
+}
+
+.review{
+    max-height: 200px;
+}
+
+.nav-bar-button{
+    height: 40px;
+    width: 60px;
+    margin-inline: 10px;
+    background-color: #064c5075;
+    transition: transform 1.5s, background-color 1.5s;
+    font-size: .7em
+}
+#headerItemContainer{
+    margin: 0;
+}
+}
+
+@media(max-width: 490px){
+    .LogoIcon{
+        display: none;
+    }
+
+    #Logo{
+        font-size: 0.8em;
+        margin-left: 5px;
+    }
+
+    #credit{
+        margin: 0;
+        text-align: right;
+    }
+    
+    main{
+        padding-bottom: 68px;
+        font-size: 0.8em;
+    }
+
+}
+
+@media(max-width: 407px){
+    main{
+        padding-bottom: 35px!important;
+    }
+}
+
+@media(max-width: 390px){
+    #credit{
+        display: none;
+    }
 }
