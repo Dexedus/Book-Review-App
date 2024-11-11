@@ -95,7 +95,7 @@ app.post("/submit", async (req, res) =>{
         [author, date, review, rating, book, coverID] );
 
 
-    res.redirect("/");
+    res.redirect("/desc");
 });
 
 //Load the update page
@@ -119,7 +119,7 @@ app.post("/edit:id", async (req, res) =>{
     let review = req.body.review;
     let rating = req.body.rating;
     await db.query("UPDATE posts SET author = ($1), descr = ($2), rating = ($3), book_auth = ($4) WHERE id = ($5)", [author, review, rating, book, id]);
-    res.redirect("/");
+    res.redirect("/desc");
 })
 
 //Filter by author of Review
@@ -138,7 +138,7 @@ app.get("/delete:id", async (req, res) =>{
     let id = req.params.id;
     await db.query("DELETE FROM posts WHERE id = ($1)", [id]);
 
-    res.redirect("/");
+    res.redirect("/desc");
 });
 
 //Click LogIn
