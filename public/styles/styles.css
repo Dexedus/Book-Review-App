@@ -54,7 +54,7 @@ header{
     background: linear-gradient(300deg, #0a7a80, #2f928a, #bfd1d4);
     background-size: 180% 180%;
     animation: gradient-animation 10s ease infinite;
-    border-bottom: 10px solid #085b5f;
+    border-bottom: 5px solid #085b5f;
     display: flex;
     justify-content: space-between;
 }
