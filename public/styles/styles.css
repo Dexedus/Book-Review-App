@@ -4,11 +4,13 @@ html{
 
 body{
     margin: 0;
+    margin-top: 75px;
     height: 100vh;
     font-family: sans-serif;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background-color: #222831;
     color: #f0f3f8;
     cursor: default;
     overflow-x: hidden;
@@ -36,6 +38,7 @@ body{
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     background-color: #94d1c9;
+    border-radius: 20px;
   }
 
 
@@ -48,10 +51,10 @@ header{
     top: 0;
     height: 75px;
     width: 100%;
-    background-color: #0a7a80;
+    background: linear-gradient(300deg, #0a7a80, #2f928a, #bfd1d4);
+    background-size: 180% 180%;
+    animation: gradient-animation 10s ease infinite;
     border-bottom: 10px solid #085b5f;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
     display: flex;
     justify-content: space-between;
 }
@@ -96,18 +99,6 @@ a{
     margin-right: 55px;
 }
 
-
-main{
-    background-color: #393E46;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: -50px;
-}
-
-
 /*Posts Styling*/
 .Posts{
     height: 100vh;
@@ -123,7 +114,6 @@ main{
     height: 100vh;
     width: 50%;
     background-color: #393E46;
-    padding-block: 0px;
     border-top: #222831 10px solid;
     border-right: #222831 10px solid;
 }
@@ -143,7 +133,6 @@ main{
     overflow-y: visible;
     width: 50%;
     background-color: #222831;
-    padding-block: 0px;
     color: #EEEEEE;
     border-top: #393E46 10px solid;
     border-left: #393E46  10px solid;
@@ -229,6 +218,38 @@ footer{
 
 
 
+/*reception styling*/
+main{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+}
+
+#LogoContainer{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.receptionForm{
+    background-color: #222831;
+}
+
+.submit{
+    margin-top: 20px;
+    height: 35px;
+    width: 70px;
+    border: none;
+    border-radius: 20px;
+    transition: background-color 1s, color 1s;
+}
+.submit:hover{
+    background-color: #085b5f;
+    color: whitesmoke;
+    cursor: pointer;
+}
 
 
 
@@ -312,18 +333,6 @@ textarea{
         font-size: smaller;
     }
 
-    .review{
-        min-height: 200px;
-    }
-
-    .leftSide, .rightSide{
-        padding: 0;
-
-    }
-
-    main{
-        padding-bottom: 65px!important;
-    }
 
     .review{
         min-height: 100px;
@@ -455,4 +464,22 @@ header{
     #credit{
         display: none;
     }
+}
+
+
+
+
+
+
+/*Animations*/
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

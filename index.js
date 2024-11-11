@@ -23,17 +23,27 @@ const db = new pg.Client({
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-let posts = [];
+let posts = []
+let userID = ""
+let account = [];
 
 //Get All Posts
-app.get("/", async (req, res) =>{
+// app.get("/", async (req, res) =>{
 
-    let data = await db.query("SELECT * FROM posts");
-    posts = data.rows;
-    console.log(posts);
-    res.render("index.ejs",{
-        posts: posts,
-    });
+//     let data = await db.query("SELECT * FROM posts");
+//     posts = data.rows;
+//     if(posts.length > 0){
+//         res.render("index.ejs",{
+//             posts: posts,
+//         });
+//     } else {
+//         res.render("blank.ejs");
+//     console.log(posts);
+// }
+// });
+
+app.get("/", async (req, res) =>{
+    res.render("reception.ejs");
 });
 
 //Get all posts in order of ascending ID
@@ -68,7 +78,7 @@ app.get("/add", async (req, res) =>{
 // Add entry to database
 app.post("/submit", async (req, res) =>{
     let author = req.body.author.trim();
-    let book = req.body.book;
+    let book = req.body.book.trim();
     let review = req.body.review;
     let rating = req.body.rating;
 
@@ -130,6 +140,68 @@ app.get("/delete:id", async (req, res) =>{
 
     res.redirect("/");
 });
+
+//Click LogIn
+app.get("/LogIn", async (req, res) =>{
+    let account = [];
+    res.render("LogSign.ejs", {
+        header: "Please sign in",
+        account: account,
+    });
+});
+
+//Click SignUp
+app.get("/SignUp", async (req, res) =>{
+    res.render("LogSign.ejs",{
+        header: "Sign up",
+    });
+});
+
+//Acceptlogin
+app.post("/checkLogIn", async (req, res) =>{
+    let username = req.body.username;
+    let password = req.body.password;
+    console.log(username);
+    console.log(password);
+
+      try {
+    let data = await db.query("SELECT * FROM users WHERE username ILIKE ($1) AND password = ($2)", [username, password]);
+    let account = data.rows[0]
+    userID = account.id;
+    let postData = await db.query("SELECT * FROM posts");
+        posts = postData.rows;
+        if(posts.length > 0){
+            res.render("index.ejs",{
+                posts: posts,
+            });
+            console.log(userID)
+        } else {
+            res.render("blank.ejs");
+        console.log(posts);
+    };
+
+} catch (err) {
+    console.error(err);
+    res.render("LogSign.ejs",{
+        header: "Incorrect username or password. Try again.",
+        account: account,
+    })
+    
+}
+});
+
+//Add user to database
+app.post("/addAccount", async (req, res) =>{
+    let username = req.body.username;
+    let password = req.body.password;
+    await db.query("INSERT INTO users (username, password) VALUES ($1, $2)", [username, password]);
+    let account = [];
+    res.render("LogSign.ejs", {
+        header: "Please sign in",
+        account: account,
+    });
+
+})
 
 
 
