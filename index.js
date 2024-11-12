@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import 'dotenv/config';
 import pg from "pg";
 import axios from "axios";
+import bcrypt from 'bcrypt';
 
 
 const app = express();
@@ -23,9 +24,10 @@ const db = new pg.Client({
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-let posts = []
-let userID = ""
+let posts = [];
+let userID = "";
 let account = [];
+let saltRounds = 10;
 
 //Get All Posts
 // app.get("/", async (req, res) =>{
@@ -42,6 +44,8 @@ let account = [];
 // }
 // });
 
+
+//Load reception page
 app.get("/", async (req, res) =>{
     res.render("reception.ejs");
 });
@@ -153,7 +157,7 @@ app.get("/LogIn", async (req, res) =>{
 //Click SignUp
 app.get("/SignUp", async (req, res) =>{
     res.render("LogSign.ejs",{
-        header: "Sign up",
+        header: "Sign up.",
     });
 });
 
@@ -161,14 +165,21 @@ app.get("/SignUp", async (req, res) =>{
 app.post("/checkLogIn", async (req, res) =>{
     let username = req.body.username;
     let password = req.body.password;
-    console.log(username);
-    console.log(password);
 
       try {
-    let data = await db.query("SELECT * FROM users WHERE username ILIKE ($1) AND password = ($2)", [username, password]);
+    let data = await db.query("SELECT * FROM users WHERE username = ($1)", [username]);
+
+if (data.rows.length > 0){
     let account = data.rows[0]
+    let hashedPassword = account.password;
     userID = account.id;
-    let postData = await db.query("SELECT * FROM posts");
+
+    bcrypt.compare(password, hashedPassword, async (err, result) =>{
+        if(err){
+            console.log(err)
+        } else {
+            if(result){
+                let postData = await db.query("SELECT * FROM posts");
         posts = postData.rows;
         if(posts.length > 0){
             res.render("index.ejs",{
@@ -180,12 +191,24 @@ app.post("/checkLogIn", async (req, res) =>{
         console.log(posts);
     };
 
-} catch (err) {
-    console.error(err);
+        } else {
+            res.render("LogSign.ejs",{
+                header: "Incorrect password. Try again.",
+                account: account,
+            });
+        };
+      }
+    });
+
+} else {
     res.render("LogSign.ejs",{
-        header: "Incorrect username or password. Try again.",
+        header: "User not found",
         account: account,
     })
+};
+
+} catch (err) {
+    console.error(err);
     
 }
 });
@@ -194,14 +217,33 @@ app.post("/checkLogIn", async (req, res) =>{
 app.post("/addAccount", async (req, res) =>{
     let username = req.body.username;
     let password = req.body.password;
-    await db.query("INSERT INTO users (username, password) VALUES ($1, $2)", [username, password]);
+      try{
+        //Check to see if the email already exists. If it does, return "Email already exists"
+    const checkResult = await db.query("SELECT * FROM users WHERE username = ($1)", [username]);
+    if(checkResult.rows.length > 0) {
+        res.render("LogSign.ejs", {
+            header: "Email already exists. Try logging in."
+        })
+    } else {
+        //Password hashing
+    bcrypt.hash(password, saltRounds, async (err, hash) =>{
+        //If theres an error, log it. Otherwise, add the account       
+        if (err) {
+            console.log(err)
+        } else {
+        await db.query("INSERT INTO users (username, password) VALUES ($1, $2)", [username, hash]);
     let account = [];
     res.render("LogSign.ejs", {
-        header: "Please sign in",
+        header: "Please sign in.",
         account: account,
-    });
-
-})
+      });
+    };
+  });
+};
+} catch (err){
+    console.log(err)
+}
+});
 
 
 

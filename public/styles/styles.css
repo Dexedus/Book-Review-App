@@ -234,7 +234,9 @@ main{
 }
 
 .receptionForm{
+    text-align: center;
     background-color: #222831;
+    margin-bottom: 75px;
 }
 
 .submit{
@@ -250,6 +252,38 @@ main{
     color: whitesmoke;
     cursor: pointer;
 }
+
+#logOrSignCard{
+    margin-bottom: 75px;
+}
+
+#logInButton{
+    transition: background-color 1s, border 1s;
+}
+#logInButton:hover{
+    background-color: #15887a;
+    border: none;
+    cursor: pointer;
+}
+
+#signUpButton{
+    transition: background-color 1s, border 1s;
+}
+#signUpButton:hover{
+    background-color: #15887a;
+    border: none;
+    cursor: pointer;
+}
+
+.flexBox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 100%;
+
+}
+
 
 
 
