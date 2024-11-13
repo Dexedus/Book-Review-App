@@ -163,18 +163,23 @@ app.get("/SignUp", async (req, res) =>{
 
 //Acceptlogin
 app.post("/checkLogIn", async (req, res) =>{
+    //user entered username/password
     let username = req.body.username;
     let password = req.body.password;
 
       try {
+        //Find the account with the matching email
     let data = await db.query("SELECT * FROM users WHERE username = ($1)", [username]);
 
+    //If account exists then get the hashed password and the userID
 if (data.rows.length > 0){
     let account = data.rows[0]
     let hashedPassword = account.password;
     userID = account.id;
 
+    //Compare the inputted password with the hashedpassword.
     bcrypt.compare(password, hashedPassword, async (err, result) =>{
+        //if err, console.log it otherwise render the homepage.
         if(err){
             console.log(err)
         } else {
@@ -189,15 +194,16 @@ if (data.rows.length > 0){
         } else {
             res.render("blank.ejs");
         console.log(posts);
-    };
+        };
 
+        //If the passwords don't match, reload the log in page.
         } else {
             res.render("LogSign.ejs",{
                 header: "Incorrect password. Try again.",
                 account: account,
             });
         };
-      }
+      };
     });
 
 } else {

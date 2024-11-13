@@ -275,17 +275,6 @@ main{
     cursor: pointer;
 }
 
-.flexBox{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
-    width: 100%;
-
-}
-
-
-
 
 
 /*New page Styling*/
