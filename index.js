@@ -29,22 +29,6 @@ let userID = "";
 let account = [];
 let saltRounds = 10;
 
-//Get All Posts
-// app.get("/", async (req, res) =>{
-
-//     let data = await db.query("SELECT * FROM posts");
-//     posts = data.rows;
-//     if(posts.length > 0){
-//         res.render("index.ejs",{
-//             posts: posts,
-//         });
-//     } else {
-//         res.render("blank.ejs");
-//     console.log(posts);
-// }
-// });
-
-
 //Load reception page
 app.get("/", async (req, res) =>{
     res.render("reception.ejs");
