@@ -2,6 +2,26 @@ html{
     scroll-behavior: smooth;
 }
 
+/*Fonts*/
+.varela-round-regular{
+    font-family: "Varela Round", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.faculty-glyphic-regular {
+    font-family: "Faculty Glyphic", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.vollkorn-font {
+    font-family: "Vollkorn", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+  }
+
 body{
     margin: 0;
     margin-top: 75px;
@@ -55,8 +75,10 @@ header{
     background-size: 180% 180%;
     animation: gradient-animation 10s ease infinite;
     border-bottom: 5px solid #085b5f;
+    box-shadow: 0px 0px 8px 0px#085b5f;
     display: flex;
     justify-content: space-between;
+    
 }
 
 #headerItemContainer, #Logo, #credit{
@@ -119,7 +141,7 @@ a{
 }
 .book-cover{
     width: 40%;
-    box-shadow: 10px 10px 10px #252727;
+    box-shadow: 10px 10px 10px 5px #242424;
 }
 
 
@@ -154,11 +176,16 @@ a{
     color: #7ec0b8;
 }
 
+.book-author{
+    font-size: 1.7em;
+}
+
 .divider{
     width: 100%;
     background-color: #0a7a80;
     height: 4px;
     border-radius: 95%;
+    box-shadow: 0px 0px 8px 0px#085b5f;
 }
 
 .review{
@@ -186,6 +213,7 @@ button{
     border-radius: 20px;
     background-color: #393E46;
     color: white;
+    box-shadow: 0px 0px 8px 0px#085b5f;
     transition: background-color 2s, border 1s, transform 1s ease-in-out;
 }
 
