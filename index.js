@@ -45,36 +45,38 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 let posts = [];
-let userID = "";
 let account = [];
 let saltRounds = 10;
+let userID = []
 
-//Load reception page
+//Load home page if authorised
 app.get("/", async (req, res) =>{
-    res.render("reception.ejs");
-});
-
-//Load the homepage
-app.get("/home", async (req, res) =>{
-
-if(req.isAuthenticated()){
-    let postData = await db.query("SELECT * FROM posts");
-    posts = postData.rows;
-    if(posts.length > 0){
-        res.render("index.ejs",{
-            posts: posts,
-        });
-        console.log(userID)
+    if(req.isAuthenticated()){
+        console.log(req.user.id)
+        let postData = await db.query("SELECT * FROM posts");
+        posts = postData.rows;
+        if(posts.length > 0){
+            res.render("index.ejs",{
+                posts: posts,
+            });
+        } else {
+            res.render("blank.ejs",{
+                message: "No posts yet, try adding one."
+            });
+        console.log(posts);
+        };
     } else {
-        res.render("blank.ejs");
-    console.log(posts);
-    };
-} else {
-res.redirect("/");
-}
+    res.redirect("/reception");
+    }
 });
 
-//Get all posts in order of ascending ID
+//Load the reception
+app.get("/reception", async (req, res) =>{
+
+res.render("reception.ejs");
+});
+
+//Get all posts in order of ascending ID if authorised
 app.get("/asc", async (req, res) =>{
 
 if(req.isAuthenticated()){
@@ -85,12 +87,12 @@ if(req.isAuthenticated()){
         posts: posts,
     });
 } else {
-res.redirect("/");
+res.redirect("/reception");
 }
 
 });
 
-// Get all posts in order of descending ID
+// Get all posts in order of descending ID if authorised
 app.get("/desc", async (req, res) =>{
 
     if(req.isAuthenticated()){
@@ -101,18 +103,18 @@ app.get("/desc", async (req, res) =>{
             posts: posts,
         });
     } else {
-    res.redirect("/");
+    res.redirect("/reception");
     }
 });
 
-// Load the new entry page
+// Load the new entry page if authorised
 app.get("/add", async (req, res) =>{
 if(req.isAuthenticated()){
     res.render("new.ejs",{
         header: "New Post",
     })
 } else {
-    res.redirect("/")
+    res.redirect("/reception")
 }
 });
 
@@ -136,27 +138,39 @@ app.post("/submit", async (req, res) =>{
         [author, date, review, rating, book, coverID] );
 
 
-    res.redirect("/home");
+    res.redirect("/");
 });
 
-//Load the update page
+//Load the update page if authorised
 app.get("/update:id", async (req, res) =>{
-if(req.isAuthenticated()){
     let id = req.params.id;
+if(req.isAuthenticated()){
+
+    let currentUserID = req.user.id;
+
+    let result = await db.query("SELECT book_auth, user_id, username FROM posts INNER JOIN users ON posts.user_id = users.id WHERE posts.id = ($1) AND user_id = ($2)", [id, currentUserID])
+    let foundPosts = result.rows
+    console.log(foundPosts.length)
+    if(foundPosts.length == 0){
+        res.render("blank.ejs",{
+        message: "Sorry, but this post doesn't belong to you :/ Click a filter button above to return to the homepage."
+        });
+    } else {
+
     let data = await db.query("SELECT * FROM posts WHERE id = ($1)",[id]);
     let posts = data.rows[0];
     res.render("new.ejs", {
         posts: posts,
         header: "Update Post",
     });
-    console.log(posts);
+}
 } else {
-    res.redirect("/")
+    res.redirect("/reception")
 }
 
 });
 
-//Update post
+//Update post if authorised
 app.post("/edit:id", async (req, res) =>{
 if(req.isAuthenticated()){
     let id = req.params.id;
@@ -167,11 +181,11 @@ if(req.isAuthenticated()){
     await db.query("UPDATE posts SET author = ($1), descr = ($2), rating = ($3), book_auth = ($4) WHERE id = ($5)", [author, review, rating, book, id]);
     res.redirect("/desc");
 } else {
-    res.redirect("/")
+    res.redirect("/reception")
 }
 });
 
-//Filter by author of Review
+//Filter by author of Review if authorised
 app.get("/author/:auth", async (req, res) =>{
 if(req.isAuthenticated()){
     let author = req.params.auth;
@@ -182,19 +196,32 @@ if(req.isAuthenticated()){
         posts: posts,
     });
 } else {
-    res.redirect("/")
+    res.redirect("/reception")
 }
 });
 
-//Delete post
+//Delete post if authorised
 app.get("/delete:id", async (req, res) =>{
-if(req.isAuthenticated()){
     let id = req.params.id;
+if(req.isAuthenticated()){
+
+    let currentUserID = req.user.id;
+
+    let result = await db.query("SELECT book_auth, user_id, username FROM posts INNER JOIN users ON posts.user_id = users.id WHERE posts.id = ($1) AND user_id = ($2)", [id, currentUserID])
+    let foundPosts = result.rows
+    console.log(foundPosts.length)
+    if(foundPosts.length == 0){
+        res.render("blank.ejs",{
+        message: "Sorry, but this post doesn't belong to you :/ Click a filter button above to return to the homepage."
+        });
+    } else {
+
     await db.query("DELETE FROM posts WHERE id = ($1)", [id]);
 
-    res.redirect("/home");
+    res.redirect("/");
+    }
 } else {
-    res.redirect("/")
+    res.redirect("/reception")
 }
 });
 
@@ -216,7 +243,7 @@ app.get("/SignUp", async (req, res) =>{
 
 //Acceptlogin
 app.post("/checkLogIn", passport.authenticate("local", {
-    successRedirect: "/home",
+    successRedirect: "/",
     failureRedirect: "/failedPassword"
 }));
 

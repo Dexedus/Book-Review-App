@@ -36,6 +36,10 @@ body{
     overflow-x: hidden;
 }
 
+#message{
+    margin: 20px;
+    text-align: center;
+}
 
 /* width */
 ::-webkit-scrollbar {
