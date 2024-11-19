@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import bodyParser from "body-parser";
 import 'dotenv/config';
 import pg from "pg";
@@ -34,6 +34,9 @@ app.use(
     secret: "TOPSECRETWORD",
     resave: false,
     saveUninitialized: true, 
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24,
+    },
   })
 );
 
@@ -214,7 +217,17 @@ app.get("/SignUp", async (req, res) =>{
 //Acceptlogin
 app.post("/checkLogIn", passport.authenticate("local", {
     successRedirect: "/home",
+    failureRedirect: "/failedPassword"
 }));
+
+//Wrong password
+app.get("/failedPassword", async (req, res) =>{
+    let account = [];
+    res.render("LogSign.ejs", {
+        header: "Wrong password. Try again",
+        account: account,
+    });
+});
 
 //Add user to database
 app.post("/addAccount", async (req, res) =>{
@@ -276,7 +289,7 @@ if (data.rows.length > 0){
     });
 
 } else {
-    return cb("User not found")
+    return cb("user not found")
 };
 
 } catch (err) {
