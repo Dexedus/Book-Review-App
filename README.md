@@ -5,6 +5,7 @@ This is my book review app where users can read, post update and delete book rev
 This app will ask you to log in or sign up by creating an account with a username (your email address) and a password. These passwords are now hashed and salted for additional security.
 
 ## TODO list
+- Add feature so only users can update and delete their own posts (Right now anyone can delete any post)
 - Add more animations.
 - Improve overall responsiveness.
 - Add cookies to create user sessions.
