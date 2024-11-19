@@ -6,6 +6,7 @@ import axios from "axios";
 import bcrypt from 'bcrypt';
 
 
+
 const app = express();
 const port = 3000;
 
@@ -34,15 +35,39 @@ app.get("/", async (req, res) =>{
     res.render("reception.ejs");
 });
 
+//Load the home page
+app.get("/home", async (req, res)  =>{
+    let postData = await db.query("SELECT * FROM posts");
+        posts = postData.rows;
+        if(posts.length > 0){
+            res.render("index.ejs",{
+                posts: posts,
+            });
+        } else {
+            res.render("blank.ejs",{
+                message: "No posts yet. Try adding one.",
+            });
+        console.log(posts);
+        };
+        console.log(userID)
+});
+
 //Get all posts in order of ascending ID
 app.get("/asc", async (req, res) =>{
 
     let data = await db.query("SELECT * FROM posts ORDER BY id ASC");
     posts = data.rows
-    console.log(posts)
-    res.render("index.ejs",{
-        posts: posts,
-    });
+    if(posts.length > 0){
+        res.render("index.ejs",{
+            posts: posts,
+        });
+    } else {
+        res.render("blank.ejs",{
+            message: "No posts yet. Try adding one.",
+        });
+    console.log(posts);
+    };
+    console.log(userID)    
 });
 
 // Get all posts in order of descending ID
@@ -50,10 +75,17 @@ app.get("/desc", async (req, res) =>{
 
     let data = await db.query("SELECT * FROM posts ORDER BY id DESC");
     posts = data.rows
-    console.log(posts)
-    res.render("index.ejs",{
-        posts: posts,
-    });
+    if(posts.length > 0){
+        res.render("index.ejs",{
+            posts: posts,
+        });
+    } else {
+        res.render("blank.ejs",{
+            message: "No posts yet. Try adding one.",
+        });
+    console.log(posts);
+    };
+    console.log(userID)
 });
 
 // Load the new entry page
@@ -73,22 +105,29 @@ app.post("/submit", async (req, res) =>{
     const result = await axios.get(`https://openlibrary.org/search.json?q='%'||${book}||'%'&limit=1`);
     let coverID = result.data.docs[0].cover_edition_key;
     
+    const user = userID
     const fullDate = new Date()
     const day = fullDate.getDate()
     const month = fullDate.getMonth() + 1
     const year = fullDate.getFullYear()
     let date = `${day}/${month}/${year}`
 
-    await db.query("INSERT INTO posts (author, date, descr, rating, book_auth, cover_id) VALUES ($1, $2, $3, $4, $5, $6)",
-        [author, date, review, rating, book, coverID] );
+    await db.query("INSERT INTO posts (author, date, descr, rating, book_auth, cover_id, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+        [author, date, review, rating, book, coverID, user] );
 
 
-    res.redirect("/desc");
+    res.redirect("/home");
 });
 
 //Load the update page
 app.get("/update:id", async (req, res) =>{
     let id = req.params.id;
+   
+    const result = await db.query("SELECT book_auth, username, user_id FROM posts INNER JOIN users ON posts.user_id = users.id WHERE posts.id = ($1)", [id]);
+    console.log(result.rows[0].user_id);
+    console.log(id)
+
+    if(result.rows[0].user_id == userID){
     let data = await db.query("SELECT * FROM posts WHERE id = ($1)",[id]);
     let posts = data.rows[0];
     res.render("new.ejs", {
@@ -96,7 +135,15 @@ app.get("/update:id", async (req, res) =>{
         header: "Update Post",
     });
 
-    console.log(posts)
+} else {
+    res.render("blank.ejs",{
+        message: "Sorry, but you can't edit a post that doesn't belong to you :/ Click a filter button above to get back to the home-page.",
+    })
+}
+
+
+
+
 });
 
 //Update post
@@ -124,9 +171,20 @@ app.get("/author/:auth", async (req, res) =>{
 //Delete post
 app.get("/delete:id", async (req, res) =>{
     let id = req.params.id;
-    await db.query("DELETE FROM posts WHERE id = ($1)", [id]);
 
-    res.redirect("/desc");
+    const result = await db.query("SELECT book_auth, username, user_id FROM posts INNER JOIN users ON posts.user_id = users.id WHERE posts.id = ($1)", [id]);
+    console.log(result.rows[0].user_id);
+    console.log(id)
+
+    if(result.rows[0].user_id == userID){
+    await db.query("DELETE FROM posts WHERE id = ($1)", [id]);
+    res.redirect("/home")
+    } else {
+        res.render("blank.ejs",{
+            message: "Sorry, but you can't delete a post that doesn't belong to you :/ Click a filter button above to get back to the home-page.",
+        });
+    };
+
 });
 
 //Click LogIn
@@ -168,17 +226,7 @@ if (data.rows.length > 0){
             console.log(err)
         } else {
             if(result){
-                let postData = await db.query("SELECT * FROM posts");
-        posts = postData.rows;
-        if(posts.length > 0){
-            res.render("index.ejs",{
-                posts: posts,
-            });
-            console.log(userID)
-        } else {
-            res.render("blank.ejs");
-        console.log(posts);
-        };
+            res.redirect("/home")
 
         //If the passwords don't match, reload the log in page.
         } else {
