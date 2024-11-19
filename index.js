@@ -4,6 +4,9 @@ import 'dotenv/config';
 import pg from "pg";
 import axios from "axios";
 import bcrypt from 'bcrypt';
+import session from "express-session";
+import passport from "passport";
+import { Strategy } from "passport-local";
 
 
 const app = express();
@@ -24,6 +27,20 @@ const db = new pg.Client({
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+//Middleware for creating session
+app.use(
+  session({
+    secret: "TOPSECRETWORD",
+    resave: false,
+    saveUninitialized: true, 
+  })
+);
+
+//Passport module MUST go after session module.
+app.use(passport.initialize());
+app.use(passport.session());
+
 let posts = [];
 let userID = "";
 let account = [];
@@ -36,6 +53,8 @@ app.get("/", async (req, res) =>{
 
 //Load the homepage
 app.get("/home", async (req, res) =>{
+
+if(req.isAuthenticated()){
     let postData = await db.query("SELECT * FROM posts");
     posts = postData.rows;
     if(posts.length > 0){
@@ -47,35 +66,51 @@ app.get("/home", async (req, res) =>{
         res.render("blank.ejs");
     console.log(posts);
     };
+} else {
+res.redirect("/");
+}
 });
 
 //Get all posts in order of ascending ID
 app.get("/asc", async (req, res) =>{
 
+if(req.isAuthenticated()){
     let data = await db.query("SELECT * FROM posts ORDER BY id ASC");
     posts = data.rows
     console.log(posts)
     res.render("index.ejs",{
         posts: posts,
     });
+} else {
+res.redirect("/");
+}
+
 });
 
 // Get all posts in order of descending ID
 app.get("/desc", async (req, res) =>{
 
-    let data = await db.query("SELECT * FROM posts ORDER BY id DESC");
-    posts = data.rows
-    console.log(posts)
-    res.render("index.ejs",{
-        posts: posts,
-    });
+    if(req.isAuthenticated()){
+        let data = await db.query("SELECT * FROM posts ORDER BY id DESC");
+        posts = data.rows
+        console.log(posts)
+        res.render("index.ejs",{
+            posts: posts,
+        });
+    } else {
+    res.redirect("/");
+    }
 });
 
 // Load the new entry page
 app.get("/add", async (req, res) =>{
+if(req.isAuthenticated()){
     res.render("new.ejs",{
         header: "New Post",
     })
+} else {
+    res.redirect("/")
+}
 });
 
 // Add entry to database
@@ -103,6 +138,7 @@ app.post("/submit", async (req, res) =>{
 
 //Load the update page
 app.get("/update:id", async (req, res) =>{
+if(req.isAuthenticated()){
     let id = req.params.id;
     let data = await db.query("SELECT * FROM posts WHERE id = ($1)",[id]);
     let posts = data.rows[0];
@@ -110,12 +146,16 @@ app.get("/update:id", async (req, res) =>{
         posts: posts,
         header: "Update Post",
     });
+    console.log(posts);
+} else {
+    res.redirect("/")
+}
 
-    console.log(posts)
 });
 
 //Update post
 app.post("/edit:id", async (req, res) =>{
+if(req.isAuthenticated()){
     let id = req.params.id;
     let author = req.body.author;
     let book = req.body.book;
@@ -123,10 +163,14 @@ app.post("/edit:id", async (req, res) =>{
     let rating = req.body.rating;
     await db.query("UPDATE posts SET author = ($1), descr = ($2), rating = ($3), book_auth = ($4) WHERE id = ($5)", [author, review, rating, book, id]);
     res.redirect("/desc");
-})
+} else {
+    res.redirect("/")
+}
+});
 
 //Filter by author of Review
 app.get("/author/:auth", async (req, res) =>{
+if(req.isAuthenticated()){
     let author = req.params.auth;
     let data =  await db.query("SELECT * FROM posts WHERE author ILIKE ($1)", [author]);
     let posts = data.rows;
@@ -134,14 +178,21 @@ app.get("/author/:auth", async (req, res) =>{
     res.render("index.ejs", {
         posts: posts,
     });
+} else {
+    res.redirect("/")
+}
 });
 
 //Delete post
 app.get("/delete:id", async (req, res) =>{
+if(req.isAuthenticated()){
     let id = req.params.id;
     await db.query("DELETE FROM posts WHERE id = ($1)", [id]);
 
     res.redirect("/home");
+} else {
+    res.redirect("/")
+}
 });
 
 //Click LogIn
@@ -161,52 +212,9 @@ app.get("/SignUp", async (req, res) =>{
 });
 
 //Acceptlogin
-app.post("/checkLogIn", async (req, res) =>{
-    //user entered username/password
-    let username = req.body.username;
-    let password = req.body.password;
-
-      try {
-        //Find the account with the matching email
-    let data = await db.query("SELECT * FROM users WHERE username = ($1)", [username]);
-
-    //If account exists then get the hashed password and the userID
-if (data.rows.length > 0){
-    let account = data.rows[0]
-    let hashedPassword = account.password;
-    userID = account.id;
-
-    //Compare the inputted password with the hashedpassword.
-    bcrypt.compare(password, hashedPassword, async (err, result) =>{
-        //if err, console.log it otherwise render the homepage.
-        if(err){
-            console.log(err)
-        } else {
-            if(result){
-                res.redirect("/home")
-
-        //If the passwords don't match, reload the log in page.
-        } else {
-            res.render("LogSign.ejs",{
-                header: "Incorrect password. Try again.",
-                account: account,
-            });
-        };
-      };
-    });
-
-} else {
-    res.render("LogSign.ejs",{
-        header: "User not found",
-        account: account,
-    })
-};
-
-} catch (err) {
-    console.error(err);
-    
-}
-});
+app.post("/checkLogIn", passport.authenticate("local", {
+    successRedirect: "/home",
+}));
 
 //Add user to database
 app.post("/addAccount", async (req, res) =>{
@@ -240,7 +248,50 @@ app.post("/addAccount", async (req, res) =>{
 }
 });
 
+passport.use (new Strategy(async function verify (username, password, cb){
+    try {
+        //Find the account with the matching email
+    let data = await db.query("SELECT * FROM users WHERE username = ($1)", [username]);
 
+    //If account exists then get the hashed password and the userID
+if (data.rows.length > 0){
+    let account = data.rows[0]
+    let hashedPassword = account.password;
+    userID = account.id;
+
+    //Compare the inputted password with the hashedpassword.
+    bcrypt.compare(password, hashedPassword, async (err, result) =>{
+        //if err, console.log it otherwise render the homepage.
+        if(err){
+            return cb(err)
+        } else {
+            if(result){
+                return cb(null, account)
+
+        //If the passwords don't match, reload the log in page.
+        } else {
+            return cb(null, false)
+        };
+      };
+    });
+
+} else {
+    return cb("User not found")
+};
+
+} catch (err) {
+    return cb(err)
+}
+})
+);
+
+passport.serializeUser((account, cb) => {
+    cb(null, account);
+});
+
+passport.deserializeUser((account, cb) => {
+    cb(null, account);
+});
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
