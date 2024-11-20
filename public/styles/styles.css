@@ -37,7 +37,7 @@ body{
 }
 
 #message{
-    margin: 20px;
+    width: 50%;
     text-align: center;
 }
 
@@ -113,10 +113,13 @@ a{
     width: 100px;
     margin-inline: 20px;
     background-color: #064c5075;
-    transition: transform 1.5s, background-color 1.5s;
+    border: 2px solid #085b5f00;
+    border-radius: 10px;
+    transition: transform 1.5s, background-color 1.5s, border 1s;
 }
 .nav-bar-button:hover{
     cursor: pointer;
+    border: 2px solid #085b5f;
     transform: scale(1.1);
     background-color: #15887a;
 
@@ -217,14 +220,13 @@ button{
     border-radius: 20px;
     background-color: #393E46;
     color: white;
-    box-shadow: 0px 0px 8px 0px#085b5f;
     transition: background-color 2s, border 1s, transform 1s ease-in-out;
 }
 
 .update-Button:hover{
     cursor: pointer;
     background-color: rgb(96, 196, 96);
-    border: none;
+    border: #085b5f00;
     transform: scale(1.1);
 
 }
@@ -232,7 +234,7 @@ button{
 .delete-Button:hover{
     cursor: pointer;
     background-color: rgb(192, 84, 84);
-    border: none;
+    border: #085b5f00;
     transform: scale(1.1);
 
 }
@@ -307,6 +309,14 @@ main{
     cursor: pointer;
 }
 
+#header{
+    color: whitesmoke;
+    background: linear-gradient(to right, #ffffff,  #ffffff, #a1a1a1, #ffffff); 
+    background-size: 400% 200%;
+    animation: gradient-animation 2s ease 1;
+    -webkit-text-fill-color: transparent; 
+    background-clip: text; 
+}
 
 
 /*New page Styling*/
