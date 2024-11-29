@@ -12,7 +12,7 @@ import { Strategy } from "passport-local";
 const app = express();
 const port = 3000;
 
-//Databse
+//Database
 const db = new pg.Client({
     user: process.env.un,
     host: process.env.host,
@@ -47,7 +47,7 @@ app.use(passport.session());
 let posts = [];
 let account = [];
 let saltRounds = 10;
-let userID = []
+let userID = [];
 
 //Load home page if authorised
 app.get("/", async (req, res) =>{
