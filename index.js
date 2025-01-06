@@ -134,8 +134,8 @@ app.post("/submit", async (req, res) =>{
     const year = fullDate.getFullYear()
     let date = `${day}/${month}/${year}`
 
-    await db.query("INSERT INTO posts (author, date, descr, rating, book_auth, cover_id) VALUES ($1, $2, $3, $4, $5, $6)",
-        [author, date, review, rating, book, coverID] );
+    await db.query("INSERT INTO posts (author, date, descr, rating, book_auth, cover_id, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+        [author, date, review, rating, book, coverID, userID] );
 
 
     res.redirect("/");
