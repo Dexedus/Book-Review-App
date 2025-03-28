@@ -8,8 +8,9 @@ This app will ask you to log in or sign up by creating an account with a usernam
 Users can update and delete posts that they have created, but cannot update and delete the posts made by other users. I use passport to serialize and deserialize the user info so the code can check if the user ID is associated with the post ID via postgreSQL.
 
 ## TODO list
-- Add more animations.
+- Improve Animations
 - Improve overall responsiveness.
+- Fix some visual issues on the lower display widths
 
 ### Feedback
 feeback and any suggestions on improving the app are welcome.
